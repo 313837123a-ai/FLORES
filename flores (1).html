@@ -1,0 +1,839 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Día de las Flores Amarillas💛🌼</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Satisfy&family=Parisienne&family=Allura&family=Alex+Brush&family=Cormorant+Garamond&family=Merienda&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #FFEFD5, #FFC0CB);
+            overflow-x: hidden;
+            font-family: 'Patrick Hand SC', cursive;
+            margin: 0;
+            min-height: 100vh;
+        }
+        :root {
+            --primary-color: #FFD700;
+        }
+        .romantic-font {
+            font-family: 'Great Vibes', cursive;
+        }
+        .petal {
+            cursor: pointer;
+            transition: fill 0.3s ease, transform 0.3s ease;
+        }
+        .petal:hover {
+            fill: #b38a01ff;
+            transform: scale(1.05);
+        }
+        .petal-group {
+            cursor: pointer;
+        }
+        .petal-group:hover .petal {
+            fill: #d19d03ff;
+            transform: scale(1.05);
+        }
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            z-index: 30;
+            animation: zoomIn 0.2s ease-in-out;
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+        }
+        @keyframes zoomIn {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .pulse {
+            animation: pulse 3s infinite;
+        }
+        .romantic-border {
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+        .message-bubble {
+            position: fixed;
+            background: #fff9e6;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            max-width: 80vw;
+            text-align: center;
+            z-index: 20;
+            box-sizing: border-box;
+            transform: translate(-50%, -50%);
+            animation: floatElement 2s ease-in-out infinite;
+        }
+        .message-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #fff9e6 Transparent;
+            transform: translateX(-50%);
+        }
+        @keyframes floatElement {
+            0% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-15px); }
+            100% { transform: translate(-50%, -50%) translateY(0px); }
+        }
+        .bg-romantic-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffd700' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .title {
+            font-size: 3.75rem;
+            color: #7F1D1D;
+            margin-bottom: 1rem;
+            margin-top: 0.4rem;
+            z-index: 10;
+            font-family: 'Dancing Script', cursive;
+            text-align: center;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            animation: pulse 3s infinite;
+            padding: 0 80px;
+        }
+        .flower-container {
+            width: 33.3333%;
+            max-width: 48rem;
+            z-index: 10;
+        }
+        .svg {
+            width: 100%;
+            height: 100%;
+        }
+        .instruction-text {
+            font-size: 1.5rem;
+            color: #7F1D1D;
+            z-index: 10;
+            border: 2px solid var(--primary-color);
+            border-radius: 9999px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            background-color: rgba(255, 255, 0, 0.1);
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            margin-top: -20px;
+        }
+        .modal-content {
+            background-color: #FFF5F5;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            font-size: 3.25rem;
+            color: #831843;
+            position: relative;
+            max-width: 50%;
+            width: fit-content;
+            text-align: center;
+            border: 2px solid var(--primary-color);
+            font-family: 'Satisfy', cursive;
+        }
+        .modal-content-small {
+            background-color: #FEF9C3;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            font-size: 1.875rem;
+            color: #831843;
+            position: relative;
+            max-width: 50%;
+            width: fit-content;
+            min-width: 30%;
+            text-align: center;
+            border: 2px solid var(--primary-color);
+            font-family: 'Satisfy', cursive;
+        }
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .image-wrapper.portrait::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px);
+            z-index: 0;
+            border-radius: 10px;
+        }
+        .modal-image {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            border-radius: 10px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #EC4899;
+            cursor: pointer;
+            z-index: 100;
+        }
+        .modal-close:hover {
+            color: #BE185D;
+        }
+        .modal-subtext {
+            font-size: 2rem;
+            margin-top: 1.5rem;
+            color: #DB2777;
+        }
+        .love-note {
+            font-size: 1.375rem;
+            color: #831843;
+        }
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: var(--primary-color);
+            opacity: 0.3;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            10% { opacity: 0.9; }
+            50% { opacity: 0.6; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-120vh); opacity: 0; }
+        }
+        .continue-button {
+            margin-top: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            font-size: 2.55rem;
+            color: #FFF;
+            background-color: #EC4899;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-family: 'Patrick Hand SC', cursive;
+        }
+        .continue-button:hover {
+            background-color: #BE185D;
+        }
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.2rem;
+                padding: 0 40px;
+            }
+            .instruction-text {
+                font-size: 1.2rem;
+                padding: 0.5rem 1rem;
+                margin-top: 0px;
+            }
+            .flower-container {
+                width: 90%;
+                max-width: none;
+            }
+            .modal-content {
+                margin: 20px;
+                font-size: 2.1rem;
+                padding: 1.5rem;
+                max-width:80%;
+            }
+            .modal-content-small {
+                margin: 10px;
+                font-size: 1.5rem;
+                padding: 2rem;
+                max-width: 90vw;
+                min-width: 70%;
+            }
+            .image-wrapper {
+                max-height: 150px;
+            }
+            .modal-image {
+                max-height: 150px;
+            }
+            .modal-subtext {
+                font-size: 1.4rem;
+            }
+            .love-note {
+                font-size: 1.2rem;
+            }
+            .message-bubble {
+                padding: 15px;
+                min-width: 150px;
+                max-width: 70vw;
+            }
+            .continue-button {
+                font-size: 1.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .music-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), #E6C200);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        .music-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+        }
+        .music-btn:active {
+            transform: scale(0.95);
+        }
+        .music-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+        .volume-control {
+            width: 120px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            margin-top: 10px;
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .volume-control.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .volume-control input {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+        .volume-control input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .volume-control input::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            border: none;
+        }
+        @media (max-width: 768px) {
+            .music-control {
+                top: 10px;
+                right: 10px;
+            }
+            .music-btn {
+                width: 35px;
+                height: 35px;
+            }
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+            .volume-control {
+                width: 100px;
+                margin-top: 8px;
+            }
+            .volume-control input {
+                height: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-romantic-pattern">
+    <div id="root"></div>
+        <div class="music-control">
+        <button class="music-btn" id="musicBtn" aria-label="Toggle music">
+            <svg id="playIcon" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+                <path d="M6 19h4V5H6zm8-14v14h4V5z"/>
+            </svg>
+        </button>
+        <div class="volume-control" id="volumeControl">
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume control">
+        </div>
+    </div>
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="https://dedicapag.com/es/PagFlorAmarilla/musica.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+    
+    <script type="text/babel">
+        const messages = [{"text":"LA MAS LINA","image":null},{"text":"TQMMM","image":null},{"text":"ME ENCANTA TU SONRISA","image":null},{"text":"ERES LA MEJOR","image":null},{"text":"SUPER AMIGA","image":null},{"text":"LA MAS ASTHETIC Y LINDA","image":null},{"text":"LINDAA","image":null},{"text":"HERMOSA","image":null}];
+        const romanticPhrases = ["tqmmm"];
+
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    petals: [0, 1, 2, 3, 4, 5, 6, 7],
+                    message: null,
+                    imageOrientations: {}, // Store portrait status for each image
+                    showFinalMessage: false,
+                    animatingPetals: {},
+                    showInitialMessage: true,
+                    loveNotes: []
+                };
+                this.hearts = [];
+                for (let i = 0; i < 20; i++) {
+                    this.hearts.push({
+                        left: Math.random() * 100,
+                        duration: 5 + Math.random() * 10,
+                        size: 10 + Math.random() * 20
+                    });
+                }
+                this.noteTimeouts = {};
+            }
+
+            componentDidMount() {
+                document.body.addEventListener('click', this.handleScreenClick);
+                document.body.addEventListener('touchstart', this.handleScreenClick);
+                // Preload all images
+                this.preloadImages();
+            }
+
+            componentWillUnmount() {
+                document.body.removeEventListener('click', this.handleScreenClick);
+                document.body.removeEventListener('touchstart', this.handleScreenClick);
+                Object.values(this.noteTimeouts).forEach(clearTimeout);
+                this.noteTimeouts = {};
+            }
+
+            preloadImages = () => {
+                messages.forEach((message, index) => {
+                    if (message.image) {
+                        const img = new Image();
+                        img.src = message.image;
+                        img.onload = () => {
+                            const isPortrait = img.naturalHeight > img.naturalWidth;
+                            this.setState(prevState => ({
+                                imageOrientations: {
+                                    ...prevState.imageOrientations,
+                                    [index]: isPortrait
+                                }
+                            }));
+                        };
+                        img.onerror = () => {
+                            console.error(`Failed to preload image: ${message.image}`);
+                        };
+                    }
+                });
+            };
+
+            handleScreenClick = (e) => {
+                if (e.target.closest('.petal-group') || 
+                    e.target.closest('#Path-stem') ||
+                    e.target.closest('#Leaf') ||
+                    e.target.closest('#Center') ||
+                    e.target.closest('.modal') || 
+                    e.target.closest('button') ||
+                    e.target.classList.contains('petal')) {
+                    return;
+                }
+
+                const id = Date.now() + Math.random();
+                const note = {
+                    id,
+                    text: romanticPhrases[Math.floor(Math.random() * romanticPhrases.length)],
+                    x: e.clientX || (e.touches && e.touches[0].clientX),
+                    y: e.clientY || (e.touches && e.touches[0].clientY)
+                };
+
+                this.setState(prev => ({ loveNotes: [...prev.loveNotes, note] }), () => {
+                    const t = setTimeout(() => {
+                        this.setState(prev => ({
+                            loveNotes: prev.loveNotes.filter(n => n.id !== id)
+                        }));
+                        delete this.noteTimeouts[id];
+                    }, 1500);
+                    this.noteTimeouts[id] = t;
+                });
+            };
+
+            handlePetalClick = (e) => {
+                e.stopPropagation();
+                const petalGroup = e.target.closest('.petal-group');
+                if (!petalGroup) return;
+                
+                const petalId = parseInt(petalGroup.id);
+                const messageObj = messages[petalId] || { text: "¡Te amo más que nada!", image: null };
+
+                setTimeout(() => {
+                    this.setState(prevState => {
+                        const newPetals = prevState.petals.filter(id => id !== petalId);
+                        const showFinal = newPetals.length === 0;
+                        return {
+                            petals: newPetals,
+                            message: messageObj,
+                            showFinalMessage: showFinal
+                        };
+                    });
+
+                    confetti({
+                        particleCount: 120,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#FFEB3B', '#FFC107', '#FF9800', '#FF5252', '#E91E63']
+                    });
+                }, 300);
+            };
+
+            closeModal = () => {
+                this.setState({ message: null });
+            };
+
+            closeFinalModal = () => {
+                this.setState({ showFinalMessage: false });
+            };
+
+            // Reemplaza la versión antigua de closeInitialMessage por ésta
+closeInitialMessage = () => {
+    this.setState({ showInitialMessage: false }, () => {
+        // Intentar reproducir la música al cerrar el modal inicial (user gesture)
+        try {
+            const music = document.getElementById("backgroundMusic");
+            const playIcon = document.getElementById("playIcon");
+            const pauseIcon = document.getElementById("pauseIcon");
+
+            if (music) {
+                // Si está pausado, intentar reproducir (click es user gesture => debería funcionar)
+                if (music.paused) {
+                    music.play().then(() => {
+                        // Actualizar iconos cuando empieza a reproducir
+                        if (playIcon) playIcon.style.display = 'none';
+                        if (pauseIcon) pauseIcon.style.display = 'block';
+                    }).catch(err => {
+                        // Si falla (raro en un click de usuario), lo registramos en consola
+                        console.warn('No se pudo reproducir el audio al cerrar el modal:', err);
+                    });
+                } else {
+                    // Si ya estaba reproduciéndose, aseguramos iconos correctos
+                    if (playIcon) playIcon.style.display = 'none';
+                    if (pauseIcon) pauseIcon.style.display = 'block';
+                }
+            }
+        } catch (e) {
+            console.error('Error al intentar iniciar la música:', e);
+        }
+    });
+};
+
+
+            renderLoveNotes = () => {
+                return this.state.loveNotes.map(note => (
+                    <div 
+                        key={note.id}
+                        className="message-bubble"
+                        style={{ top: `${note.y}px`, left: `${note.x}px`, zIndex: 20 }}
+                    >
+                        <span className="love-note">{note.text}</span>
+                    </div>
+                ));
+            };
+
+            render() {
+                return (
+                    <div className="container">
+                        <div className="hearts-container">
+                            {this.hearts.map((h, i) => (
+                                <span 
+                                    key={i} 
+                                    className="heart" 
+                                    style={{ 
+                                        left: `${h.left}%`, 
+                                        animationDuration: `${h.duration}s`, 
+                                        fontSize: `${h.size}px` 
+                                    }}
+                                >
+                                    💛
+                                </span>
+                            ))}
+                        </div>
+                        {this.renderLoveNotes()}
+                        {this.state.showInitialMessage && (
+                            <div className="modal">
+                                <div className="modal-content romantic-border">
+                                    <div className="modal-emoji">💛</div>
+                                    Para la una personita especial                                    <div className="modal-subtext">Haz clic en cada pétalo para descubrir un mensaje de amor</div>
+                                    <button onClick={this.closeInitialMessage} className="continue-button">Continuar</button>
+                                </div>
+                            </div>
+                        )}
+                        <h1 className="title">Flores Amarillas para ti</h1>
+                        {this.state.message && (
+                            <div className="modal">
+                                <div className="modal-content-small romantic-border">
+                                    {this.state.message.image && (
+                                        <div 
+                                            className={`image-wrapper ${this.state.imageOrientations[messages.indexOf(this.state.message)] ? 'portrait' : ''}`} 
+                                            style={{ '--img-url': `url(${this.state.message.image})` }}
+                                        >
+                                            <img 
+                                                src={this.state.message.image} 
+                                                alt="Romantic image" 
+                                                className="modal-image"
+                                            />
+                                        </div>
+                                    )}
+                                    {this.state.message.text}
+                                    <button onClick={this.closeModal} className="modal-close">✖</button>
+                                </div>
+                            </div>
+                        )}
+                        
+                        <div className="flower-container">
+                            <svg className="svg" viewBox="0 0 244 280" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                                <defs>
+                                    <path d="M130.987847,122 C133.659505,157.293805 135.315501,187.391727 135.955835,212.293767 C136.596169,237.195806 130.273506,263.431217 116.987847,291" id="path-stem"></path>
+                                    <filter x="-63.1%" y="-5.9%" width="226.2%" height="114.2%" filterUnits="objectBoundingBox" id="filter-stem">
+                                        <feMorphology radius="5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+                                        <feOffset dx="0" dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+                                        <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+                                        <feOffset dx="0" dy="2" in="shadowInner" result="shadowInner"></feOffset>
+                                        <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+                                        <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                                        <feColorMatrix values="0 0 0 0 0.2 0 0 0 0 0.5 0 0 0 0 0.2 0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                                    </filter>
+                                    <path d="M223.120444,246.724259 C216.601694,240.205509 198.89935,211.936759 205.4181,205.418009 C211.93685,198.899259 240.2056,216.603165 246.72435,223.120353 C253.2431,229.639103 253.2431,240.205509 246.72435,246.724259 C240.2056,253.241446 229.638412,253.241446 223.120444,246.724259 Z" id="path-petal"></path>
+                                    <filter x="-18.9%" y="-18.9%" width="137.8%" height="137.8%" filterUnits="objectBoundingBox" id="filter-petal">
+                                        <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                                        <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                                        <feColorMatrix values="0 0 0 0 0.9 0 0 0 0 0.7 0 0 0 0 0.2 0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                                    </filter>
+                                    <circle id="path-sm-circle" cx="27" cy="27" r="27"></circle>
+                                    <filter x="-16.7%" y="-16.7%" width="133.3%" height="133.3%" filterUnits="objectBoundingBox" id="filter-sm-circle">
+                                        <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                                        <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                                        <feColorMatrix values="0 0 0 0 0.9 0 0 0 0 0.7 0 0 0 0 0.2 0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                                    </filter>
+                                    <circle id="path-lg-circle" cx="27" cy="27" r="18"></circle>
+                                    <filter x="-25.0%" y="-25.0%" width="150.0%" height="150.0%" filterUnits="objectBoundingBox" id="filter-lg-circle">
+                                        <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                                        <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                                        <feColorMatrix values="0 0 0 0 0.9 0 0 0 0 0.7 0 0 0 0 0.2 0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                                    </filter>
+                                    <path d="M0,0 C15,15 35,40 45,65 C50,90 45,120 25,135 C10,145 -10,140 -20,115 C-28,90 -20,55 -10,30 C-5,15 -2,5 0,0 Z" id="path-leaf"></path>
+                                    <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-leaf">
+                                        <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+                                        <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+                                        <feColorMatrix values="0 0 0 0 0.2 0 0 0 0 0.5 0 0 0 0 0.2 0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+                                    </filter>
+                                </defs>
+                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="Artboard" transform="translate(-78.000000, -78.000000)">
+                                        <g id="Background" transform="translate(78.000000, 78.000000)">
+                                            <circle id="Mask" fill="#FFF3E0" cx="122" cy="122" r="122"></circle>
+                                            <g id="Path-stem" stroke-linecap="round" transform="translate(126.493923, 184.500000) scale(-1, 1) translate(-126.493923, -206.500000)">
+                                                <use fill="black" fill-opacity="1" filter="url(#filter-stem)" xlinkHref="#path-stem"></use>
+                                                <g id="Leaf" transform="translate(175, 200) rotate(45) scale(0.4)">
+                                                    <use fill="black" fill-opacity="1" filter="url(#filter-leaf)" xlinkHref="#path-leaf"></use>
+                                                    <use fill="green" stroke="darkgreen" xlinkHref="#path-leaf"></use>
+                                                </g>
+                                                <use stroke="#2E7D32" stroke-width="10" xlinkHref="#path-stem"></use>
+                                            </g>
+                                        </g>
+                                        <g id="Petal" transform="translate(0,-30)" fill="#FFD700" fill-rule="nonzero">
+                                            {this.state.petals.map((i) => {
+                                                const rotate = i > 3 ? `rotate(${(90 * i) + 45} 200 200)` : `rotate(${90 * i} 200 200)`;
+                                                const animClass = this.state.animatingPetals[i] ? 'remove-petal' : '';
+                                                return (
+                                                    <g key={i} id={i} transform={rotate} onClick={this.handlePetalClick} className={`petal-group ${animClass}`}>
+                                                        <use fill="black" fill-opacity="1" filter="url(#filter-petal)" xlinkHref="#path-petal"></use>
+                                                        <use fill="#FFD700" xlinkHref="#path-petal" className="petal"></use>
+                                                    </g>
+                                                );
+                                            })}
+                                        </g>
+                                        <g id="Center" transform="translate(173.000000, 143.000000)">
+                                            <g id="Oval">
+                                                <use fill="black" fill-opacity="1" filter="url(#filter-sm-circle)" xlinkHref="#path-sm-circle"></use>
+                                                <use fill="#8B4513" fill-rule="evenodd" xlinkHref="#path-sm-circle"></use>
+                                            </g>
+                                            <g id="Oval">
+                                                <use fill="black" fill-opacity="1" filter="url(#filter-lg-circle)" xlinkHref="#path-lg-circle"></use>
+                                                <use fill="#513227" fill-rule="evenodd" xlinkHref="#path-lg-circle"></use>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div className="instruction-text">
+                            hacer clic para que las flores crezcan                        </div>
+                        {this.state.showFinalMessage && (
+                            <div className="modal">
+                                <div className="modal-content romantic-border">
+                                    <div className="modal-emoji">🌹💖</div>
+                                                                        
+                                    <button onClick={this.closeFinalModal} className="modal-close">✖</button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            }
+        }
+
+        function setupMusicControls() {
+    const music = document.getElementById("backgroundMusic");
+    const musicBtn = document.getElementById("musicBtn");
+    const playIcon = document.getElementById("playIcon");
+    const pauseIcon = document.getElementById("pauseIcon");
+    const volumeSlider = document.getElementById("volumeSlider");
+    const volumeControl = document.getElementById("volumeControl");
+
+    let hideVolumeTimeout = null;
+
+    if (!music || !musicBtn || !volumeSlider || !volumeControl) {
+        console.error('Music or control elements not found');
+        return;
+    }
+
+    // Establecer volumen inicial desde slider
+    music.volume = parseFloat(volumeSlider.value || 0.5);
+
+    // No forzamos play() aquí para evitar bloqueos por autoplay en navegadores.
+    // Ajustamos los iconos según el estado actual del audio.
+    if (music.paused) {
+        if (playIcon) playIcon.style.display = 'block';
+        if (pauseIcon) pauseIcon.style.display = 'none';
+    } else {
+        if (playIcon) playIcon.style.display = 'none';
+        if (pauseIcon) pauseIcon.style.display = 'block';
+    }
+
+    function toggleMusic() {
+        if (music.paused) {
+            music.play().then(() => {
+                if (playIcon) playIcon.style.display = 'none';
+                if (pauseIcon) pauseIcon.style.display = 'block';
+            }).catch(error => {
+                console.error('Error playing audio:', error.message);
+            });
+        } else {
+            music.pause();
+            if (playIcon) playIcon.style.display = 'block';
+            if (pauseIcon) pauseIcon.style.display = 'none';
+        }
+    }
+
+    musicBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleMusic();
+        if (!volumeControl.classList.contains("visible")) {
+            volumeControl.classList.add("visible");
+            clearTimeout(hideVolumeTimeout);
+            hideVolumeTimeout = setTimeout(() => volumeControl.classList.remove("visible"), 2000);
+        } else {
+            volumeControl.classList.remove("visible");
+        }
+    });
+
+    volumeSlider.addEventListener("input", (e) => {
+        music.volume = parseFloat(e.target.value);
+        clearTimeout(hideVolumeTimeout);
+        volumeControl.classList.add("visible");
+    });
+
+    volumeSlider.addEventListener("change", () => {
+        hideVolumeTimeout = setTimeout(() => volumeControl.classList.remove("visible"), 2000);
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!volumeControl.contains(e.target) && !musicBtn.contains(e.target)) {
+            volumeControl.classList.remove("visible");
+            clearTimeout(hideVolumeTimeout);
+        }
+    });
+}
+
+
+                setupMusicControls();
+        
+        ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+</body>
+</html>
